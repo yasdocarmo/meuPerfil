@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .profile-img {
+            width: 100%;
+            max-width: 150px;
+            height: auto;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .card {
+            max-width: 18rem;
+            width: 100%;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hobby-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hobby-item button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card mx-auto">
+            <img id="profile-img" src="https://via.placeholder.com/150" class="card-img-top profile-img"
+                alt="Imagem de Perfil" onclick="document.getElementById('fileInput').click();">
+            <input type="file" id="fileInput" style="display: none;" accept="image/*" onchange="alterarImagem();">
+                <div class="card-body">
+                    <h5 class="card-title" id="user-name">Nome: João Silva</h5>
+                    <p id="user-age">Idade: 25 anos</p>
+                    <h6>Hobbies:</h6>
+                    <ul id="hobby-list" class="list-group">
+                        <li class="list-group-item hobby-item">
+                            Futebol <button class="btn btn-danger btn-sm remove-hobby">Excluir</button>
+                        </li>
+                        <li class="list-group-item hobby-item">
+                            Leitura <button class="btn btn-danger btn-sm remove-hobby">Excluir</button>
+                        </li>
+                        <li class="list-group-item hobby-item">
+                            Fotografia <button class="btn btn-danger btn-sm remove-hobby">Excluir</button>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <button id="change-name" class="btn btn-primary mt-3">Alterar Nome</button>
+            <button id="change-age" class="btn btn-secondary mt-3">Alterar Idade</button>
+            <button id="add-hobby" class="btn btn-success mt-3">Adicionar Hobby</button>
+            <button id="change-bg" class="btn btn-warning mt-3">Mudar Cor de Fundo</button>
+            <button id="reset-btn" class="btn btn-danger mt-3">Resetar</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Função para alterar o nome
+        document.getElementById("change-name").addEventListener("click", function () {
+            const newName = prompt("Digite o novo nome:");
+            if (newName) {
+                document.getElementById("user-name").textContent = "Nome: " + newName;
+            }
+        });
+
+        // Função para alterar a idade
+        document.getElementById("change-age").addEventListener("click", function () {
+            const newAge = prompt("Digite a nova idade:");
+            if (newAge) {
+                document.getElementById("user-age").textContent = "Idade: " + newAge + " anos";
+            }
+        });
+
+        // Função para adicionar um hobby
+        document.getElementById("add-hobby").addEventListener("click", function () {
+            const newHobby = prompt("Digite um novo hobby:");
+            if (newHobby) {
+                const hobbyList = document.getElementById("hobby-list");
+                const newHobbyItem = document.createElement("li");
+                newHobbyItem.classList.add("list-group-item", "hobby-item");
+                newHobbyItem.textContent = newHobby;
+
+                const removeButton = document.createElement("button");
+                removeButton.classList.add("btn", "btn-danger", "btn-sm", "remove-hobby");
+                removeButton.textContent = "Excluir";
+                removeButton.addEventListener("click", function () {
+                    hobbyList.removeChild(newHobbyItem);
+                });
+
+                newHobbyItem.appendChild(removeButton);
+                hobbyList.appendChild(newHobbyItem);
+            }
+        });
+
+        // Função para mudar a cor de fundo
+        document.getElementById("change-bg").addEventListener("click", function () {
+            const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
+            document.body.style.backgroundColor = randomColor;
+        });
+
+        // Função para resetar a página
+        document.getElementById("reset-btn").addEventListener("click", function () {
+            location.reload();
+        });
+
+        // Função para alterar a imagem de perfil ao selecionar uma nova imagem
+        function alterarImagem() {
+            const fileInput = document.getElementById("fileInput");
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById("profile-img").src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Funcionalidade de remover hobby ao clicar no botão "Excluir"
+        document.querySelectorAll(".remove-hobby").forEach(function (button) {
+            button.addEventListener("click", function (event) {
+                const hobbyItem = event.target.closest(".hobby-item");
+                hobbyItem.remove();
+            });
+        });
+    </script>
+</body>
+
+</html>
